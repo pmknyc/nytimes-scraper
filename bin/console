@@ -12,3 +12,4 @@ require "nytimes/scraper"
 
 require "irb"
 IRB.start(__FILE__)
+puts "TESTING GIT CONNECTION"

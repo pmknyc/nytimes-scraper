@@ -51,8 +51,11 @@ class NyTimes::Scraper
             new_par = par.text.gsub(" #{search.search_term} ", " #{search.search_term} ".green)
             new_par = new_par.gsub("â\u0080\u009C", "\"").gsub("â\u0080\u009D", "\"").gsub("â\u0080\u0099", "'").gsub("â\u0080\u0094", "—")
 
-            article_title = article_doc.css("title").text.gsub("â\u0080\u009C", "\"").gsub("â\u0080\u009D", "\"").gsub("â\u0080\u0099", "'").gsub("â\u0080\u0094", "—")
-            NyTimes::SearchMatch.new(new_par, article_title, link)
+            title = article_doc.css("title").text.gsub("â\u0080\u009C", "\"").gsub("â\u0080\u009D", "\"").gsub("â\u0080\u0099", "'").gsub("â\u0080\u0094", "—")
+            author = article_doc.css(".css-1fv7b6t.e1jsehar1 span").collect { |span| span.text}
+            date = article_doc.css(".css-1xtbm1r.epjyd6m3").css("time @datetime").to_s#(".css-ld3wwf.e16638kd1").css(".css-1sbuyqj.e16638kd4").text
+
+            NyTimes::SearchMatch.new(new_par, title, link, author, date)
 
             # puts %$#{new_par}$
             # puts "#{"ARTICLE TITLE:".red} #{article_doc.css("title").text.gsub("â\u0080\u009C", "\"").gsub("â\u0080\u009D", "\"").gsub("â\u0080\u0099", "'").gsub("â\u0080\u0094", "—")}"

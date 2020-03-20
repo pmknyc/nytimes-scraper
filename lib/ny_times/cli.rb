@@ -38,14 +38,15 @@ class NyTimes::CLI
 		search.section_url = NyTimes::Search.sections[section_input]
 		search.search_section
 		search.search_matches.each do |search_match|
-			puts search_match.search_id
+			puts search_match.search_match_id
 			puts search_match.context
 			puts "#{"ARTICLE TITLE:".red} #{search_match.article_title.gsub(" - The New York Times", "")}"
+			puts "#{"ARTICLE AUTHOR:".red} #{search_match.article_author}"
+			puts "#{"ARTICLE DATE:".red} #{search_match.article_date.split("T").first}"
 			puts "#{"ARTICLE LINK:".red} #{search_match.article_url}"
 			puts
 			# binding.pry
 		end
-
 		puts 
 		puts "Search Overview:"
 		puts "Total Articles scanned: #{search.article_sub_urls.count}"

@@ -29,7 +29,7 @@ class NyTimes::Scraper
       # puts a.attribute("href").value
       if a.attribute("href") == nil
           puts "nil link value"
-      elsif a.attribute("href").value.include?("html") #&&
+      elsif a.attribute("href").value.include?("html") &&
           #a.attribute("href").value.include?(Time.now.to_s.split(" ").first.gsub("-", "/"))
           !a.attribute("href").value.include?("membercenter") &&
           !a.attribute("href").value.include?("content") &&
@@ -46,7 +46,7 @@ class NyTimes::Scraper
       # binding.pry
       end
     end
-
+    binding.pry
     search.article_sub_urls.each do |link|
     link = "https://www.nytimes.com/#{link}"
     html = open(link)

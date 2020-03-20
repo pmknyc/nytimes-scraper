@@ -34,6 +34,7 @@ class NyTimes::CLI
 		search.section_url = NyTimes::Search.sections[section_input]
 		search.search_section
 		search.search_matches.each do |search_match|
+			puts search_match.search_id
 			puts search_match.context
 			puts "#{"ARTICLE TITLE:".red} #{search_match.article_title.gsub(" - The New York Times", "")}"
 			puts "#{"ARTICLE LINK:".red} #{search_match.article_url}"

@@ -6,7 +6,10 @@ class NyTimes::CLI
 		puts "Here are all the sections today's online paper:"
 
 		NyTimes::Search.get_sections
-		puts NyTimes::Search.section_names
+		NyTimes::Search.section_names.each do |name|
+			print "   #{name}   "
+		end
+		puts puts
 
 		section_selection
 	end
@@ -29,8 +32,26 @@ class NyTimes::CLI
 		# Use the inputs in some Search instance method
 		search = NyTimes::Search.new(section_input, search_input)
 		search.section_url = NyTimes::Search.sections[section_input]
-		# binding.pry
+		search.search_section
+		search.search_matches.each do |search_match|
+			puts search_match.context
+			puts "#{"ARTICLE TITLE:".red} #{search_match.article_title.gsub(" - The New York Times", "")}"
+			puts "#{"ARTICLE LINK:".red} #{search_match.article_url}"
+			puts
+			# binding.pry
+		end
+
+		puts 
+		puts "Search Overview:"
+		puts "Total Articles scanned: #{search.article_sub_urls.count}"
+		puts "Total Hits: #{search.search_matches.count}"
+	# binding.pry
+		puts "Total matching articles: #{search.search_matches.collect {|match| match.article_title}.uniq.count}"
+	end
+
+	def search_results
+		NyTimes::
+
 		puts "Searched #{search.search_overview} articles"
-		# binding.pry
 	end
 end

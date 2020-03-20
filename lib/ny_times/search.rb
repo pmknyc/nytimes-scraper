@@ -1,14 +1,15 @@
 class NyTimes::Search
-	attr_accessor :section_name, :search_term, :section_url, :total_articles
+	attr_accessor :section_name, :search_term, :section_url, :search_matches, :article_sub_urls #:total_hits
 
 	@@sections = {}#.uniq!.reject! { |item| item.empty?}
-	@@search_matches = []
 	@@searches = []
 	# total_articles = []
 	def initialize(section_name, search_term)
 		@section_name = section_name
 		@search_term = search_term
-		@total_articles = 0
+		@article_sub_urls = []
+		# @total_hits = 0
+		@search_matches = []
 		@@searches << self
 	end
 
@@ -40,9 +41,9 @@ class NyTimes::Search
 		@@sections.keys
 	end
 
-	def search_overview
+	def search_section
 		NyTimes::Scraper.scrape_section(section_name, section_url)
-		@total_articles
-		# binding.pry
 	end
+
+
 end

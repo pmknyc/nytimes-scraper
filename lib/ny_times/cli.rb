@@ -29,6 +29,8 @@ class NyTimes::CLI
 		# Use the inputs in some Search instance method
 		search = NyTimes::Search.new(section_input, search_input)
 		search.section_url = NyTimes::Search.sections[section_input]
-		binding.pry
+		# binding.pry
+		puts "Searched #{search.search_overview} articles"
+		# binding.pry
 	end
 end

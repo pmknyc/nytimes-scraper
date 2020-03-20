@@ -11,11 +11,6 @@ class NyTimes::Scraper
 				# binding.pry
 				NyTimes::Search.add_section(section_name, section_url)
 			end
-
-
-			# if !NyTimes::Search.sections.include?(section_name) && section_name != ""
-			# 	NyTimes::Search.add_section(section_name, section_url)
-			# end
 		end
 	end
 
@@ -39,14 +34,12 @@ class NyTimes::Scraper
 
           if !search.article_sub_urls.include?(a.attribute("href").value)
           	search.article_sub_urls << a.attribute("href").value
-          	# binding.pry
         	end
           # NyTimes::Search.searches.last.total_articles += 1
           # puts a.attribute("href").value
-      # binding.pry
       end
     end
-    binding.pry
+    # binding.pry
     search.article_sub_urls.each do |link|
     link = "https://www.nytimes.com/#{link}"
     html = open(link)

@@ -3,6 +3,10 @@
 class NyTimes::CLI
 	def greeting
 		puts "Welcome to the New York Times Scraper"
+		display_sections
+	end
+
+	def display_sections
 		puts "Here are all the sections today's online paper:"
 
 		NyTimes::Search.get_sections
@@ -48,11 +52,21 @@ class NyTimes::CLI
 		puts "Total Hits: #{search.search_matches.count}"
 	# binding.pry
 		puts "Total matching articles: #{search.search_matches.collect {|match| match.article_title}.uniq.count}"
+
+		puts "Would you like to do another search? (y/n)"
+		input = gets.strip
+
+		while input != "y" && input != "n"
+			puts "Please enter y or n"
+			input = gets.strip
+		end
+
+		if input == "y"
+			display_sections
+		end
 	end
 
 	def search_results
-		NyTimes::
 
-		puts "Searched #{search.search_overview} articles"
 	end
 end

@@ -11,5 +11,7 @@ require "nytimes/scraper"
 # Pry.start
 
 require "irb"
-IRB.start(__FILE__)
-puts "TESTING GIT CONNECTION"
+# puts "TESTING GIT CONNECTION"
+# IRB.start(__FILE__)
+require_relative "../lib/scraper.rb"
+require_relative "../lib/student.rb"

@@ -32,20 +32,20 @@ class NyTimes::CLI
 		section_input = nil
 		while section_input == nil 
 			puts "What section would you like to search?"
-			section_input = gets.strip
+			section_input = gets.strip.upcase
 			# Use the inputs in some Search instance method
 		end
 
-		while !NyTimes::Search.sections.include?(section_input) && section_input != "all"#one of the sections in the NyTimes, so in the Search.sections
+		while !NyTimes::Search.sections.include?(section_input) && section_input != "ALL"#one of the sections in the NyTimes, so in the Search.sections
 			puts "Please enter a valid section name"
-			section_input = gets.strip
+			section_input = gets.strip.upcase
 		end
 
 		puts "Please enter a search term"
 		search_input = gets.strip
 		# Use the inputs in some Search instance method
 		
-		if section_input == "all"
+		if section_input == "ALL"
 			NyTimes::Search.sections.each do |section_name, section_url|
 				puts "searching the #{section_name} section..."
 				search = NyTimes::Search.new(section_name, search_input)
@@ -55,11 +55,16 @@ class NyTimes::CLI
 				# show_search_match
 				show_search_summary(search)
 			end
+			total_articles = 0
+			NyTimes::Search.searches.each { |search| total_articles += search.article_sub_urls.count }
+			puts "Total articles searched: #{total_articles}"
+
 		else
 			search = NyTimes::Search.new(section_input, search_input)
 			search.section_url = NyTimes::Search.sections[section_input]
 			search.search_section
 			show_search_summary(search)
+			# binding.pry
 		end
 
 		puts "Would you like to do another search? (y/n)"

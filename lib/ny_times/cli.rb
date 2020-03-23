@@ -43,12 +43,18 @@ class NyTimes::CLI
 
 		puts "Please enter a search term"
 		search_input = gets.strip
-		# Use the inputs in some Search instance method
+		
+		puts "How far back do you want to look? Enter number of days (from 1 - 7)"
+		recency_input = gets.strip.to_i
+		while recency_input < 1 || recency_input > 7
+			puts "Please enter a number from 1 - 7"
+			recency_input = gets.strip.to_i
+		end
 		
 		if section_input == "ALL"
 			NyTimes::Search.sections.each do |section_name, section_url|
 				puts "searching the #{section_name} section..."
-				search = NyTimes::Search.new(section_name, search_input)
+				search = NyTimes::Search.new(section_name, search_input, recency_input)
 				search.section_url = NyTimes::Search.sections[section_name]
 				search.search_section
 				# binding.pry
@@ -60,11 +66,11 @@ class NyTimes::CLI
 			puts "Total articles searched: #{total_articles}"
 
 		else
-			search = NyTimes::Search.new(section_input, search_input)
+			search = NyTimes::Search.new(section_input, search_input, recency_input)
 			search.section_url = NyTimes::Search.sections[section_input]
 			search.search_section
 			show_search_summary(search)
-			# binding.pry
+			binding.pry
 		end
 
 		puts "Would you like to do another search? (y/n)"

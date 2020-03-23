@@ -19,15 +19,12 @@ class NyTimes::Scraper
     # binding.pry
 		html = open(section_url)
 		section_doc = Nokogiri::HTML(html)
-    # binding.pry
+    
+    recency_in_secs = search.recency_in_days * 24 * 60 * 60
     section_doc.css("#site-content a").each do |a|
-      # binding.pry
-      # puts a.attribute("href").value
-      # if a.attribute("href") == nil
-      #     puts "nil link value"
       if  a.attribute("href") != nil &&
           a.attribute("href").value.include?("html") &&
-          (a.attribute("href").value.include?(Time.now.to_s.split(" ").first.gsub("-", "/")) || a.attribute("href").value.include?((Time.now - 86400).to_s.split(" ").first.gsub("-", "/"))) &&
+          (a.attribute("href").value.include?(Time.now.to_s.split(" ").first.gsub("-", "/")) || a.attribute("href").value.include?((Time.now - recency_in_secs).to_s.split(" ").first.gsub("-", "/"))) &&
           !a.attribute("href").value.include?("/membercenter") &&
           !a.attribute("href").value.include?("/content") &&
           !a.attribute("href").value.include?("/interactive") #&&
@@ -54,11 +51,13 @@ class NyTimes::Scraper
     html = open(link)
     article_doc = Nokogiri::HTML(html)
   
-    case_variants =[" #{search.search_term.upcase} ", " #{search.search_term.downcase} ", " #{search.search_term.capitalize} "]
+    case_variants =[" #{search.search_term.downcase} ", " #{search.search_term.capitalize}", "#{search.search_term.upcase} "]
     article_doc.css(".css-exrw3m.evys1bk0").collect do |par|
         case_match = case_variants.detect { |word_case| word_case if par.text.include?(word_case)}
         if case_match
-            new_par = par.text.gsub(" #{case_match} ", " #{case_match} ".green)
+            # binding.pry
+
+            new_par = par.text.gsub(case_match,case_match.green)
             new_par = new_par.gsub("â\u0080\u009C", "\"").gsub("â\u0080\u009D", "\"").gsub("â\u0080\u0099", "'").gsub("â\u0080\u0094", "—")
 
             title = article_doc.css("title").text.gsub("â\u0080\u009C", "\"").gsub("â\u0080\u009D", "\"").gsub("â\u0080\u0099", "'").gsub("â\u0080\u0094", "—")

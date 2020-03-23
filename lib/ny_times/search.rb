@@ -1,13 +1,14 @@
 class NyTimes::Search
-	attr_accessor :section_name, :search_term, :section_url, :search_matches, :article_sub_urls
+	attr_accessor :section_name, :search_term, :section_url, :search_matches, :article_sub_urls, :recency_in_days
 
 	@@sections = {"FRONT PAGE" => "https://www.nytimes.com/"}#.uniq!.reject! { |item| item.empty?}
 	@@searches = []
-	def initialize(section_name, search_term)
+	def initialize(section_name, search_term, recency_in_days)
 		@section_name = section_name
 		@search_term = search_term
 		@article_sub_urls = []
 		@search_matches = []
+		@recency_in_days = recency_in_days
 		@@searches << self
 	end
 

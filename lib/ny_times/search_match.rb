@@ -9,5 +9,6 @@ class NyTimes::SearchMatch
 		@article_author = article_author
 		@article_date = article_date
 		NyTimes::Search.searches.last.search_matches << self
+		NyTimes::CLI.instances.last.show_search_match(self)
 	end
 end

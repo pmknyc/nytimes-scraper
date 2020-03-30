@@ -1,4 +1,4 @@
-class NyTimes::CLI
+class NyTimesSearch::CLI
 	@@instances = []
 	
 	def initialize
@@ -11,14 +11,14 @@ class NyTimes::CLI
 
 	def greeting
 		puts "Welcome to the New York Times Scraper"
-		NyTimes::Search.get_sections
+		NyTimesSearch::Search.get_sections
 		display_sections
 	end
 
 	def display_sections
 		puts "\n Please choose from one of these sections"
 
-		NyTimes::Search.section_names.each do |name|
+		NyTimesSearch::Search.section_names.each do |name|
 			print "   #{name}   "
 		end
 		puts puts
@@ -34,7 +34,7 @@ class NyTimes::CLI
 			puts
 		end
 
-		while !NyTimes::Search.sections.include?(section_input) && section_input != "ALL"#one of the sections in the NyTimes, so in the Search.sections
+		while !NyTimesSearch::Search.sections.include?(section_input) && section_input != "ALL"#one of the sections in the NyTimes, so in the Search.sections
 			puts "Please enter a valid section name"
 			section_input = gets.strip.upcase
 			puts
@@ -53,20 +53,20 @@ class NyTimes::CLI
 		end
 		
 		if section_input == "ALL"
-			NyTimes::Search.sections.each do |section_name, section_url|
+			NyTimesSearch::Search.sections.each do |section_name, section_url|
 				puts "searching the #{section_name} section..."
-				search = NyTimes::Search.new(section_name, search_input, recency_input)
-				search.section_url = NyTimes::Search.sections[section_name]
+				search = NyTimesSearch::Search.new(section_name, search_input, recency_input)
+				search.section_url = NyTimesSearch::Search.sections[section_name]
 				search.search_section
 				show_search_summary(search)
 			end
 			total_articles = 0
-			NyTimes::Search.searches.each { |search| total_articles += search.article_sub_urls.count }
+			NyTimesSearch::Search.searches.each { |search| total_articles += search.article_sub_urls.count }
 			puts "Total articles searched: #{total_articles}"
 
 		else
-			search = NyTimes::Search.new(section_input, search_input, recency_input)
-			search.section_url = NyTimes::Search.sections[section_input]
+			search = NyTimesSearch::Search.new(section_input, search_input, recency_input)
+			search.section_url = NyTimesSearch::Search.sections[section_input]
 			search.search_section
 			show_search_summary(search)
 		end

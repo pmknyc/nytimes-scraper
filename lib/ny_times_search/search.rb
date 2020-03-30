@@ -1,4 +1,4 @@
-class NyTimes::Search
+class NyTimesSearch::Search
 	attr_accessor :section_name, :search_term, :section_url, :search_matches, :article_sub_urls, :recency_in_days
 
 	@@sections = {"FRONT PAGE" => "https://www.nytimes.com/"}#.uniq!.reject! { |item| item.empty?}
@@ -17,7 +17,7 @@ class NyTimes::Search
 	end
 
 	def self.get_sections
-		NyTimes::Scraper.scrape_menu
+		NyTimesSearch::Scraper.scrape_menu
 		@@sections
 	end
 
@@ -35,6 +35,6 @@ class NyTimes::Search
 	end
 
 	def search_section
-		NyTimes::Scraper.scrape_section(section_name, section_url)
+		NyTimesSearch::Scraper.scrape_section(section_name, section_url)
 	end
 end

@@ -1,4 +1,4 @@
-class NyTimes::Scraper
+class NyTimesSearch::Scraper
 	def self.scrape_menu
 		html = open("https://www.nytimes.com/")
 		doc = Nokogiri::HTML(html)
@@ -9,13 +9,13 @@ class NyTimes::Scraper
 				section_name = li.css("a").text
 				section_url = li.css("a").attribute("href").value
 				# binding.pry
-				NyTimes::Search.add_section(section_name.upcase, section_url)
+				NyTimesSearch::Search.add_section(section_name.upcase, section_url)
 			end
 		end
 	end
 
 	def self.scrape_section(section_name, section_url)
-    search = NyTimes::Search.searches.last
+    search = NyTimesSearch::Search.searches.last
 		html = open(section_url)
 		section_doc = Nokogiri::HTML(html)
     
@@ -33,7 +33,7 @@ class NyTimes::Scraper
           !a.attribute("href").value.include?("/membercenter") &&
           !a.attribute("href").value.include?("/content") &&
           !a.attribute("href").value.include?("/interactive") &&
-          !NyTimes::Search.searches.any? { |search| search.article_sub_urls.detect {|url| url == a.attribute("href").value}} &&
+          !NyTimesSearch::Search.searches.any? { |search| search.article_sub_urls.detect {|url| url == a.attribute("href").value}} &&
           !a.attribute("href").value.include?("http")
 
           if !search.article_sub_urls.include?(a.attribute("href").value)
@@ -64,12 +64,7 @@ class NyTimes::Scraper
             author = article_doc.css(".css-1fv7b6t.e1jsehar1 span").collect { |span| span.text}
             date = article_doc.css(".css-1xtbm1r.epjyd6m3").css("time @datetime").to_s#(".css-ld3wwf.e16638kd1").css(".css-1sbuyqj.e16638kd4").text
 
-            NyTimes::SearchMatch.new(new_par, title, link, author, date)
-            # puts %$#{new_par}$
-            # puts "#{"ARTICLE TITLE:".red} #{article_doc.css("title").text.gsub("â\u0080\u009C", "\"").gsub("â\u0080\u009D", "\"").gsub("â\u0080\u0099", "'").gsub("â\u0080\u0094", "—")}"
-            # puts "#{"ARTICLE LINK:".red} #{link}" 
-            # puts
-            # matching_pars << new_par
+            NyTimesSearch::SearchMatch.new(new_par, title, link, author, date)
         end
     end
 end 

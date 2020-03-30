@@ -1,8 +1,8 @@
-require_relative 'lib/ny_times/version'
+require_relative 'lib/ny_times_search/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "nytimes-scraper"
-  spec.version       = NyTimes::VERSION
+  spec.name          = "ny_times-search"
+  spec.version       = NyTimesSearch::VERSION
   spec.authors       = ["LIManuel"]
   spec.email         = ["leonmalisov@gmail.com"]
 

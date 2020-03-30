@@ -1,3 +1,3 @@
-module NyTimes
+module NyTimesSearch
   VERSION = "0.1.0"
 end

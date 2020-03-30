@@ -1,5 +1,3 @@
-# require_relative "../scraper.rb"
-
 class NyTimes::CLI
 	@@instances = []
 	
@@ -33,22 +31,25 @@ class NyTimes::CLI
 		while section_input == nil 
 			puts "What section would you like to search?"
 			section_input = gets.strip.upcase
-			# Use the inputs in some Search instance method
+			puts
 		end
 
 		while !NyTimes::Search.sections.include?(section_input) && section_input != "ALL"#one of the sections in the NyTimes, so in the Search.sections
 			puts "Please enter a valid section name"
 			section_input = gets.strip.upcase
+			puts
 		end
 
 		puts "Please enter a search term"
 		search_input = gets.strip
+		puts
 		
 		puts "How far back do you want to look? Enter number of days (from 1 - 7)"
 		recency_input = gets.strip.to_i
 		while recency_input < 1 || recency_input > 7
 			puts "Please enter a number from 1 - 7"
 			recency_input = gets.strip.to_i
+			puts
 		end
 		
 		if section_input == "ALL"
@@ -57,8 +58,6 @@ class NyTimes::CLI
 				search = NyTimes::Search.new(section_name, search_input, recency_input)
 				search.section_url = NyTimes::Search.sections[section_name]
 				search.search_section
-				# binding.pry
-				# show_search_match
 				show_search_summary(search)
 			end
 			total_articles = 0
@@ -70,15 +69,16 @@ class NyTimes::CLI
 			search.section_url = NyTimes::Search.sections[section_input]
 			search.search_section
 			show_search_summary(search)
-			binding.pry
 		end
 
 		puts "Would you like to do another search? (y/n)"
 		input = gets.strip
+		puts
 
 		while input != "y" && input != "n"
 			puts "Please enter y or n"
 			input = gets.strip
+			puts
 		end
 
 		if input == "y"
@@ -96,24 +96,10 @@ class NyTimes::CLI
 		puts
 	end
 
-	def show_search_matches
-		search.search_matches.each do |search_match|
-			puts search_match.search_match_id
-			puts search_match.context
-			puts "#{"ARTICLE TITLE:".red} #{search_match.article_title.gsub(" - The New York Times", "")}"
-			puts "#{"ARTICLE AUTHOR:".red} #{search_match.article_author}"
-			puts "#{"ARTICLE DATE:".red} #{search_match.article_date.split("T").first}"
-			puts "#{"ARTICLE LINK:".red} #{search_match.article_url}"
-			puts
-			# binding.pry
-		end
-	end
-
 	def show_search_summary(search)
 		puts "#{search.section_name} section search overview:"
 		puts "Total Articles scanned: #{search.article_sub_urls.count}"
 		puts "Total Hits: #{search.search_matches.count}"
-	# binding.pry
 		puts "Total matching articles: #{search.search_matches.collect {|match| match.article_title}.uniq.count}"
 		puts puts		
 	end

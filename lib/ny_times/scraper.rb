@@ -16,32 +16,32 @@ class NyTimes::Scraper
 
 	def self.scrape_section(section_name, section_url)
     search = NyTimes::Search.searches.last
-    # binding.pry
 		html = open(section_url)
 		section_doc = Nokogiri::HTML(html)
     
-    recency_in_secs = search.recency_in_days * 24 * 60 * 60
+    # recency_in_secs = search.recency_in_days * 24 * 60 * 60
+
     section_doc.css("#site-content a").each do |a|
+      if a.attribute("href") != nil && !a.attribute("href").value.scan(/\d{4}\/\d{2}\/\d{2}/).empty?
+        article_date = Date.strptime(a.attribute("href").value.scan(/\d{4}\/\d{2}\/\d{2}/).join, "%Y/%m/%d")
+      else
+        article_date = Date.today
+      end
       if  a.attribute("href") != nil &&
           a.attribute("href").value.include?("html") &&
-          (a.attribute("href").value.include?(Time.now.to_s.split(" ").first.gsub("-", "/")) || a.attribute("href").value.include?((Time.now - recency_in_secs).to_s.split(" ").first.gsub("-", "/"))) &&
+          article_date > article_date - search.recency_in_days &&
           !a.attribute("href").value.include?("/membercenter") &&
           !a.attribute("href").value.include?("/content") &&
-          !a.attribute("href").value.include?("/interactive") #&&
-          # !a.attribute("href").value.include?("https") #&&
-          # a.attribute("href").value.include?("/#{section_name}/") 
+          !a.attribute("href").value.include?("/interactive") &&
+          !NyTimes::Search.searches.any? { |search| search.article_sub_urls.detect {|url| url == a.attribute("href").value}} &&
+          !a.attribute("href").value.include?("http")
 
           if !search.article_sub_urls.include?(a.attribute("href").value)
           	search.article_sub_urls << a.attribute("href").value
         	end
-
-          # NyTimes::Search.searches.last.total_articles += 1
-          # puts a.attribute("href").value
       end
-    # binding.pry
     end
 
-    # binding.pry
 
     search.article_sub_urls.each do |link|
     if !link.include?("https")

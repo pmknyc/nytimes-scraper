@@ -1,3 +1,5 @@
+require "open-uri"
+
 class NyTimesSearch::Scraper
 	def self.scrape_menu
 		html = open("https://www.nytimes.com/")

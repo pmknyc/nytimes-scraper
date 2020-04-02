@@ -10,7 +10,8 @@ class NyTimesSearch::CLI
 	end
 
 	def greeting
-		puts "Welcome to the New York Times Scraper!".yellow
+		puts "Welcome to the New York Times Searcher!".yellow
+		puts "Search any New York Times section for any search term (case insensitive)"
 		NyTimesSearch::Search.get_sections
 		display_sections
 	end

@@ -1,7 +1,7 @@
 require_relative "../lib/ny_times_search.rb"
 require "open-uri"
 require "nokogiri"
-require 'pry'
+require "pry"
 require "colorize"
 
 NyTimesSearch::CLI.new.greeting
